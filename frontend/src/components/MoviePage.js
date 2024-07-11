@@ -1,54 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './MoviePage.css';
 
-const movies = [
-    {
-        id: 1,
-        name: 'Movie 1',
-        image: 'path_to_image',
-        category: 'UA',
-        languages: ['Malayalam', 'English'],
-        description: 'Description of Movie 1',
-        cast: ['Actor 1', 'Actor 2'],
-        reviews: ['Review 1', 'Review 2']
-    },
-    {
-        id: 2,
-        name: 'Movie 2',
-        image: 'path_to_image',
-        category: 'A',
-        languages: ['Hindi', 'English'],
-        description: 'Description of Movie 2',
-        cast: ['Actor 3', 'Actor 4'],
-        reviews: ['Review 3', 'Review 4']
-    },
-    // Add more movies as needed
-];
-
 const MoviePage = () => {
     const { id } = useParams();
-    const movie = movies.find(movie => movie.id === parseInt(id));
+    const [movie, setMovie] = useState(null);
+    const [seats, setSeats] = useState(1);
+
+    useEffect(() => {
+        const fetchMovie = async () => {
+            const response = await fetch(`http://localhost:5000/api/movies/${id}`);
+            const data = await response.json();
+            setMovie(data);
+        };
+
+        fetchMovie();
+    }, [id]);
+
+    const handleBooking = async () => {
+        const response = await fetch('http://localhost:5000/api/bookings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                movieId: movie._id,
+                userId: 'some-user-id', // Replace with actual user ID
+                seats: seats,
+                status: 'Available'
+            })
+        });
+
+        const data = await response.json();
+        alert(`Booking successful! Booking ID: ${data._id}`);
+    };
 
     if (!movie) {
-        return <div>Movie not found</div>;
+        return <div>Loading...</div>;
     }
 
     return (
         <div className="movie-page">
-            <h2>{movie.name}</h2>
             <img src={movie.image} alt={movie.name} />
-            <p><strong>Category:</strong> {movie.category}</p>
-            <p><strong>Languages:</strong> {movie.languages.join(', ')}</p>
-            <p><strong>Description:</strong> {movie.description}</p>
-            <p><strong>Cast:</strong> {movie.cast.join(', ')}</p>
-            <div className="reviews">
-                <h3>Reviews</h3>
-                {movie.reviews.map((review, index) => (
-                    <p key={index}>{review}</p>
-                ))}
+            <h2>{movie.name}</h2>
+            <p>{movie.description}</p>
+            <p>Category: {movie.category}</p>
+            <p>Languages: {movie.languages.join(', ')}</p>
+            <p>Cast: {movie.cast.join(', ')}</p>
+            <p>Reviews: {movie.reviews.join(', ')}</p>
+            <div>
+                <label>Seats:</label>
+                <input type="number" value={seats} onChange={(e) => setSeats(e.target.value)} min="1" />
+                <button onClick={handleBooking}>Book Ticket</button>
             </div>
-            <button>Book Ticket</button>
         </div>
     );
 };

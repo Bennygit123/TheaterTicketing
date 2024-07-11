@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './CustomerDashboard.css';
+import './AdminDashboard.css';
 
-const CustomerDashboard = () => {
+const AdminDashboard = () => {
     const [movies, setMovies] = useState([]);
 
     useEffect(() => {
@@ -16,8 +16,8 @@ const CustomerDashboard = () => {
     }, []);
 
     return (
-        <div className="dashboard">
-            <h2>Customer Dashboard</h2>
+        <div className="admin-dashboard">
+            <h2>Admin Dashboard</h2>
             <div className="movies-list">
                 {movies.map(movie => (
                     <div key={movie._id} className="movie-item">
@@ -25,7 +25,10 @@ const CustomerDashboard = () => {
                         <h3>{movie.name}</h3>
                         <p>Category: {movie.category}</p>
                         <p>Languages: {movie.languages.join(', ')}</p>
-                        <Link to={`/movie/${movie._id}`}>View Details</Link>
+                        <p>Average Rating: {movie.averageRating}</p>
+                        <p>Tickets Sold: {movie.ticketsSold}</p>
+                        <Link to={`/admin/movie/${movie._id}`}>Edit</Link>
+                        <button>Delete</button>
                     </div>
                 ))}
             </div>
@@ -33,4 +36,5 @@ const CustomerDashboard = () => {
     );
 };
 
-export default CustomerDashboard;
+export default AdminDashboard;
+
