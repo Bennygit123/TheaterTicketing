@@ -15,9 +15,12 @@ app.use(express.json());
 
 const moviesRouter = require('./routes/movies');
 const bookingsRouter = require('./routes/bookings');
+const adminRouter = require('./routes/admin');
+
 
 app.use('/api/movies', moviesRouter);
 app.use('/api/bookings', bookingsRouter);
+app.use('/api/admin', adminRouter);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

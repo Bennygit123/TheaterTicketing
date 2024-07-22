@@ -18,6 +18,7 @@ const AdminDashboard = () => {
     return (
         <div className="admin-dashboard">
             <h2>Admin Dashboard</h2>
+            <Link to="/admin/add-movie">Add New Movie</Link>
             <div className="movies-list">
                 {movies.map(movie => (
                     <div key={movie._id} className="movie-item">
@@ -27,7 +28,7 @@ const AdminDashboard = () => {
                         <p>Languages: {movie.languages.join(', ')}</p>
                         <p>Average Rating: {movie.averageRating}</p>
                         <p>Tickets Sold: {movie.ticketsSold}</p>
-                        <Link to={`/admin/movie/${movie._id}`}>Edit</Link>
+                        <Link to={`/admin/edit-movie/${movie._id}`}>Edit</Link>
                         <button>Delete</button>
                     </div>
                 ))}

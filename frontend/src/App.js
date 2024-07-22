@@ -6,6 +6,8 @@ import SignUp from './components/SignUp';
 import CustomerDashboard from './components/CustomerDashboard';
 import MoviePage from './components/MoviePage';
 import AdminDashboard from './components/AdminDashboard';
+import AddMovie from './components/AddMovie';
+import EditMovie from './components/EditMovie';
 import './App.css';
 
 const App = () => {
@@ -19,6 +21,8 @@ const App = () => {
                     <Route path="/customer-dashboard" element={<CustomerDashboard />} />
                     <Route path="/movie/:id" element={<MoviePage />} />
                     <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin/add-movie" element={<AddMovie />} />
+                    <Route path="/admin/edit-movie/:id" element={<EditMovie />} />
                 </Routes>
             </div>
         </Router>
